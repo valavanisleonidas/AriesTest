@@ -120,8 +120,18 @@ export const initializeAgent = async (walletKey: string) => {
     agent.registerOutboundTransport(new WsOutboundTransport())
 
     await agent.initialize()
-    console.log(anoncreds.createLinkSecret())
-    console.log("anoncreds ", anoncreds.version())
+    console.log("anoncreds native version: ", anoncreds.version())
+
+    console.log("direct anoncreds link secret: ", anoncreds.createLinkSecret())
+    
+    console.log('creating link secret using credo')
+    try {
+        const linkSecret = await agent.modules.anoncreds.createLinkSecret()
+        console.log(`link secret id: ${linkSecret}`)
+    } catch(error) { 
+        console.log(`error: ${error}`)
+    }
+
 
     return agent
 }
